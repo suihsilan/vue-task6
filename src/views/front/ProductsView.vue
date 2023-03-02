@@ -6,7 +6,8 @@
         <td>{{ product.title }}</td>
         <td><img :src="product.imageUrl" width="200" alt=""></td>
         <td>
-          <RouterLink :to="`/product/${product.id}`">連結至單一品項</RouterLink>
+          <RouterLink :to="`/product/${product.id}`" class="btn btn-outline-secondary">產品細節</RouterLink>
+          <button type="button" class="btn btn-outline-primary" @click="addToCart(product.id)">加入購物車</button>
         </td>
       </tr>
     </tbody>
@@ -33,6 +34,17 @@ export default {
         .then((res) => {
           console.log(res)
           this.products = res.data.products
+        })
+    },
+    addToCart (id) {
+      const data = {
+        product_id: id,
+        qty: 1
+      }
+
+      this.$http.post(`${VITE_APP_URL}/v2/api/${VITE_APP_PATH}/cart`, { data })
+        .then(res => {
+          console.log(res)
         })
     }
   },
